@@ -33,6 +33,7 @@ jobs:
         run: |
           echo $RELEASE_VERSION
           echo ${{ env.RELEASE_VERSION }}
+          echo ${GITHUB_REF:10}
 
       - name: Create Release
         id: create_release
