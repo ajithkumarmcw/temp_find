@@ -14,11 +14,10 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-
+        # git fetch --prune --unshallow --tags
       - name: Fetch latest tag
         id: tag_fetcher
         run: |
-          git fetch --prune --unshallow --tags
           echo "Latest tag"
           git describe --tags
           git describe --tags --abbrev=0
