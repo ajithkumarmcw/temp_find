@@ -19,10 +19,10 @@ jobs:
         id: tag_fetcher
         run: |
           echo "Latest tag"
-          git describe --tags
-          git describe --tags --abbrev=0
-          echo '::set-output name=latest_tag::$(git describe --tags).zip'
-          echo '::set-output name=latest_tag_alone::$(git describe --tags --abbrev=0)'
+          git describe --tags --always
+          git describe --tags --abbrev=0 --always
+          echo '::set-output name=latest_tag::$(git describe --tags --always).zip'
+          echo '::set-output name=latest_tag_alone::$(git describe --tags --abbrev=0 --always)'
 
       - name: Print latest tag          
         run: echo "${{ steps.tag_fetcher.outputs.latest_tag_alone }}"
