@@ -14,14 +14,28 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+
+      - name: Fetch latest tag
+        id: tag_fetcher
+        run: |
+          git fetch --prune --unshallow --tags
+          echo "Latest tag"
+          git describe --tags
+          git describe --tags --abbrev=0
+          echo '::set-output name=latest_tag::$(git describe --tags).zip'
+          echo '::set-output name=latest_tag_alone::$(git describe --tags --abbrev=0)'
+
+      - name: Print latest tag          
+        run: echo "${{ steps.tag_fetcher.outputs.latest_tag_alone }}"
+        
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+          GITHUB_TOKEN: ${{ secrets.TOKEN_REPO }} # This token is provided by Actions, you do not need to create your own token
         with:
-          tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
+          tag_name: ${{ steps.tag_fetcher.outputs.latest_tag_alone }}
+          release_name: Release ${{ steps.tag_fetcher.outputs.latest_tag_alone }}
           body: |
             Changes in this Release
             - First Change
