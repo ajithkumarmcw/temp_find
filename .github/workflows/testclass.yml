@@ -18,6 +18,7 @@ jobs:
       - name: Fetch latest tag
         id: tag_fetcher
         run: |
+          git fetch --prune --unshallow --tags
           echo "Latest tag"
           git describe --tags --always
           git describe --tags --abbrev=0 --always
