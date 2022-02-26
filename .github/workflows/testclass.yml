@@ -25,12 +25,17 @@ jobs:
           echo '::set-output name=latest_tag::$(git describe --tags --always).zip'
           echo '::set-output name=latest_tag_alone::$(git describe --tags --abbrev=0 --always)'
           echo '::set-output name=latest_tag_name::$(git describe --tags  --always)'
-          set nameoftag=$(git describe --tags  --always)
+          set nameoftag=steps.tag_fetcher.outputs.latest_tag_name
+          MINOR=$(git describe --tags --always)
+          VERSIONFINAL="${MINOR}"
+          echo "::set-output name=versionme::${VERSIONFINAL}"
 
       - name: Print latest tag          
         run: echo "${{ steps.tag_fetcher.outputs.latest_tag_name }}"
       - name: Print latest tag normal          
-        run: echo $nameoftag
+        run: echo "$nameoftag"
+      - name: Print latest tag normal 2          
+        run: echo "${{ steps.tag_fetcher.outputs.versionme }}"
       - name: Print latest tag complete          
         run: echo "${{ steps.tag_fetcher.outputs.latest_tag }}"
 
@@ -49,7 +54,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
         with:
           tag_name: ${{ steps.tag_fetcher.outputs.latest_tag_name }}
-          release_name: Release ${{ steps.tag_fetcher.outputs.latest_tag_name }}
+          release_name: Release${{ steps.tag_fetcher.outputs.latest_tag_name }}
           body: |
             Changes in this Release
             - First Change
