@@ -9,6 +9,9 @@ on:
 
 jobs:
   build:
+    environment: NEWENV
+    env:
+      key1: ${{ secrets.SUPERCHARGE }}
     name: Create Release
     runs-on: ubuntu-latest
     steps:
@@ -31,7 +34,7 @@ jobs:
         id: create_release
         uses: actions/create-release@v1
         env:
-          GITHUB_TOKEN: ${{ secrets.SUPERSECRET }} # This token is provided by Actions, you do not need to create your own token
+          GITHUB_TOKEN: ${{ env.key1 }} # This token is provided by Actions, you do not need to create your own token
         with:
           tag_name: v1.0.11
           release_name: Release v1.0.11
