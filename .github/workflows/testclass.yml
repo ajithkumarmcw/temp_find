@@ -24,9 +24,10 @@ jobs:
           git describe --tags --abbrev=0 --always
           echo '::set-output name=latest_tag::$(git describe --tags --always).zip'
           echo '::set-output name=latest_tag_alone::$(git describe --tags --abbrev=0 --always)'
+          echo '::set-output name=latest_tag_name::$(git describe --tags  --always)'
 
       - name: Print latest tag          
-        run: echo "${{ steps.tag_fetcher.outputs.latest_tag_alone }}"
+        run: echo "${{ steps.tag_fetcher.outputs.latest_tag_name }}"
       - name: Print latest tag complete          
         run: echo "${{ steps.tag_fetcher.outputs.latest_tag }}"
 
@@ -44,8 +45,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
         with:
-          tag_name: ${{ steps.tag_fetcher.outputs.latest_tag }}
-          release_name: Release ${{ steps.tag_fetcher.outputs.latest_tag }}
+          tag_name: ${{ steps.tag_fetcher.outputs.latest_tag_name }}
+          release_name: Release ${{ steps.tag_fetcher.outputs.latest_tag_name }}
           body: |
             Changes in this Release
             - First Change
